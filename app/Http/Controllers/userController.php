@@ -29,12 +29,14 @@ class userController extends Controller
         $password = $allRequest['password'];
         $first_name = $allRequest['first_name'];
         $last_name = $allRequest['last_name'];
+        $date_of_birth = $allRequest['date_of_birth'];
         $dataInsertToDatabase = array(
             'name'=>$name,
             'email'=>$email,
             'password'=>$password,
             'first_name'=>$first_name,
             'last_name'=>$last_name,
+            'date_of_birth'=>$date_of_birth
         );
         $objUser = new User();
         $objUser->insert($dataInsertToDatabase);
@@ -53,6 +55,7 @@ class userController extends Controller
         $password = $allRequest['password'];
         $first_name = $allRequest['first_name'];
         $last_name = $allRequest['last_name'];
+        $date_of_birth = $allRequest['date_of_birth'];
 
         $objUser = new User();
         $getUserById  = $objUser->find($id);
@@ -61,6 +64,7 @@ class userController extends Controller
         $getUserById->password = $password;
         $getUserById->first_name = $first_name;
         $getUserById->last_name = $last_name;
+        $getUserById->date_of_birth = $date_of_birth;
         $getUserById->save();
     }
     public function del($id){

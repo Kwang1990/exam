@@ -23,7 +23,7 @@
                         <td>{{$user->name}}</td>
                         <td>{{$user->first_name}}</td>
                         <td>{{$user->last_name}}</td>
-                        <td>{{$user->date_of_bith}}</td>
+                        <td>{{$user->date_of_birth}}</td>
                         <td>
                             <a href='user/<?php echo $user['id'];?>/edit'>Edit</a>
                             <a href='user/<?php echo $user['id'];?>/delete'>Del</a>

@@ -9,15 +9,18 @@
                     <th>Id</th>
                     <th>Category Name</th>
                     <th>Category Description</th>
-                    <th>detail</th>
-                   
+                    <th>Action</th>
+                    <th><a href="{{ route('category.create')}}">Add Category</a></th>
                 </tr>
                 @foreach($category as $cat)
                     <tr>
                         <td>{{$cat->category_id}}</td>
-                        <td>{{$cat->category_name}} </td>
+                        <td>{{$cat->category_name}}</td>
                         <td>{{$cat->category_description}}</td>
-                        <td><a href="{{route('Category.detail', $cat->category_id)}}">?</a></td>
+                        <td>
+                            <a href='category/<?php echo $cat['category_id'];?>/edit'>Edit</a>
+                            <a href='category/<?php echo $cat['category_id'];?>/delete'>Del</a>
+                        </td>
 
                        
 

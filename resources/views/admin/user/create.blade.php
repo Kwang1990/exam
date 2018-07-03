@@ -8,7 +8,8 @@
                 <div class="card-header">{{ __('Add User') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ URL::action('userController@store') }}" aria-label="{{ __('Register') }}">
+                    <form method="POST" action="{{ URL::action('userController@store') }}" aria-label="{{ __('Register') }}"
+                    enctype="multipart/form-data">
                         @csrf
 
                         <div class="form-group row">
@@ -46,6 +47,13 @@
 
                             <div class="col-md-6">
                                 <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="date_of_birth" class="col-md-4 col-form-label text-md-right">{{ __('date_of_birth') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="date_of_birth" type="date" class="form-control{{ $errors->has('date_of_birth') ? ' is-invalid' : '' }}" name="date_of_birth" required>
                             </div>
                         </div>
                         <div class="form-group row mb-0">

@@ -7,21 +7,26 @@
 
                 <tr>
                     <th>Id</th>
-                    <th>Product Name</th>
-                    <th>Product SKU</th>
-                    <th>Product Price</th>
-                    <th>Product Images</th>
-                    <th>detail</th>
-                   
+                    <th>Name</th>
+                    <th>SKU</th>
+                    <th>Price</th>
+                    <th>Images</th>
+                    <th>Category ID</th>
+                    <th>Action</th>
+                    <th><a href="{{ route('product.create')}}">Add Product</a></th>
                 </tr>
                 @foreach($product as $pros)
                     <tr>
                         <td>{{$pros->id_product}}</td>
                         <td>{{$pros->product_name}} </td>
-                        <td>{{$cat->product_sku}}</td>
-                        <td>{{$cat->product_price}}</td>
-                        <td>{{$cat->product_image}}</td>
-                        <td><a href="{{route('product.detail', $pros->id_product)}}">?</a></td>
+                        <td>{{$pros->product_sku}}</td>
+                        <td>{{$pros->product_price}}</td>
+                        <td>{{$pros->product_image}}</td>
+                        <td>{{$pros->category_id}}</td>
+                        <td>
+                            <a href='product/<?php echo $pros['id_product'];?>/edit'>Edit</a>
+                            <a href='product/<?php echo $pros['id_product'];?>/delete'>Del</a>
+                        </td>
 
                        
 
