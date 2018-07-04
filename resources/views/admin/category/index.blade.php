@@ -1,16 +1,18 @@
-<html>
-    <div>
-        <h3>list Category</h3>
+
+@extends('admin')
+
+@section('content')
 
         <div>
-            <table>
+            <input class="form-control" id="myInput" type="text" placeholder="Search..">
+  <br>
+            <table class="table table-hover">
 
                 <tr>
                     <th>Id</th>
-                    <th>Category Name</th>
-                    <th>Category Description</th>
+                    <th>Name</th>
+                    <th>Description</th>
                     <th>Action</th>
-                    <th><a href="{{ route('category.create')}}">Add Category</a></th>
                 </tr>
                 @foreach($category as $cat)
                     <tr>
@@ -19,6 +21,7 @@
                         <td>{{$cat->category_description}}</td>
                         <td>
                             <a href='category/<?php echo $cat['category_id'];?>/edit'>Edit</a>
+                            <a>|</a>
                             <a href='category/<?php echo $cat['category_id'];?>/delete'>Del</a>
                         </td>
 
@@ -29,7 +32,8 @@
             </table>
            
         </div>
-        <div></div>
-        <!-- @includeIf('admin.shared.activity_logs._detail_modal',[]) -->
-    </div>
-</html>
+        <button type="submit" class="btn-primary btn">
+                                     <a style="color: #FFF" href="{{ route('category.create')}}">Add Category</a>
+
+                                </button>
+    @endsection 
