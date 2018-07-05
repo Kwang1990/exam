@@ -24,7 +24,13 @@ class CreateUser extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required'
+            'name' => 'required|string|max:255',
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8|regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/',
+            'date_of_birth'=>'required|date',
+            'avatar'=>'image'
         ];
     }
 }

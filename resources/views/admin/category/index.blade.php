@@ -20,20 +20,16 @@
                         <td>{{$cat->category_name}}</td>
                         <td>{{$cat->category_description}}</td>
                         <td>
-                            <a href='category/<?php echo $cat['category_id'];?>/edit'>Edit</a>
-                            <a>|</a>
-                            <a href='category/<?php echo $cat['category_id'];?>/delete'>Del</a>
+                            <a href='category/<?php echo $cat['category_id'];?>/edit' class="btn btn-info" role="button">Edit</a>
+                            <a href='category/<?php echo $cat['category_id'];?>/delete' class="btn btn-danger" role="button" onclick="return confirm('Are you sure?')">Del</a>
                         </td>
-
-                       
 
                     </tr>
                 @endforeach
             </table>
            
         </div>
-        <button type="submit" class="btn-primary btn">
-                                     <a style="color: #FFF" href="{{ route('category.create')}}">Add Category</a>
 
-                                </button>
+                                     <a style="color: #FFF" href="{{ route('category.create')}}" class="btn btn-dark">Add Category</a>
+
     @endsection 

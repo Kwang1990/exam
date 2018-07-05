@@ -24,12 +24,11 @@
                         <td>{{$pros->product_name}} </td>
                         <td>{{$pros->product_sku}}</td>
                         <td>{{$pros->product_price}}</td>
-                        <td>{{$pros->product_image}}</td>
+                        <td>{{$pros->Product_image}}</td>
                         <td>{{$pros->category_id}}</td>
                         <td>
-                            <a href='product/<?php echo $pros['id_product'];?>/edit'>Edit</a>
-                            <a>|</a>
-                            <a href='product/<?php echo $pros['id_product'];?>/delete'>Del</a>
+                            <a href="product/<?php echo $pros['id_product'];?>/edit" class="btn btn-info" role="button">Edit</a>
+                            <a href='product/<?php echo $pros['id_product'];?>/delete' class="btn btn-danger" role="button" onclick="return confirm('Are you sure?')">Del</a>
                         </td>
 
                        
@@ -39,9 +38,8 @@
             </table>
            
         </div>
-        <button type="submit" class="btn-primary btn">
-                                     <a style="color: #FFF" href="{{ route('product.create')}}">Add Product</a>
-
-                                </button>
+        <div>
+                                     <a style="color: #FFF" href="{{ route('product.create')}}" class="btn btn-dark" >Add Product</a>
+                            </div>
 
 @endsection

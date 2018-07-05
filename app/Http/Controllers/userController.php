@@ -60,7 +60,7 @@ class userController extends Controller
         return view('admin.user.edit')->with('getUserById',$getUserById);
     }
     public function update(Request $request){
-
+        $path = $request->file('avatar')->store('public/avatars');
         $allRequest = $request->all();
         $id = $allRequest['id'];
         $name = $allRequest['name'];
@@ -78,6 +78,7 @@ class userController extends Controller
         $getUserById->first_name = $first_name;
         $getUserById->last_name = $last_name;
         $getUserById->date_of_birth = $date_of_birth;
+        $getUserById->avatar = $path;
         $getUserById->save();
         return redirect()->action('userController@index');
 
