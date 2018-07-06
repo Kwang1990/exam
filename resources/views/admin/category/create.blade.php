@@ -16,6 +16,7 @@
 
                             <div class="col-md-6">
                                 <input id="category_name" type="text" class="form-control{{ $errors->has('category_name') ? ' is-invalid' : '' }}" name="category_name" value="{{ old('category_name') }}" autofocus>
+                                <div style="color:#FF0000" class="errormsg" for="category_name"></div>
                             </div>
                             <div class="col-md-6 offset-md-4">
                                 @if($errors->has('category_name'))
@@ -34,6 +35,7 @@
 
                             <div class="col-md-6">
                                 <input id="category_description" type="text" class="form-control{{ $errors->has('category_description') ? ' is-invalid' : '' }}" name="category_description" value="{{ old('category_description') }}" autofocus>
+                                <div style="color:#FF0000" class="errormsg" for="category_description"></div>
                             </div>
                             <div class="col-md-6 offset-md-4">
                              @if($errors->has('category_description'))

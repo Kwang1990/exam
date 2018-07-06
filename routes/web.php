@@ -14,6 +14,9 @@
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/admin/login', function () {
+    return view('auth.login');
+});
 Route::get('/admin', function () {
     return view('admin');
 })->name('admin');
@@ -41,3 +44,4 @@ Route::post('/admin/product/create','ProductController@store')->name('product.st
 Route::get('/admin/product/{id_product}/edit','ProductController@edit')->name('product.edit');
 Route::post('/admin/product/update','ProductController@update')->name('product.update');
 Route::get('/admin/product/{id_product}/delete','ProductController@del')->name('product.delete');
+//admin nè

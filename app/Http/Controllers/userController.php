@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\CreateUser;
@@ -45,7 +46,7 @@ class userController extends Controller
         $dataInsertToDatabase = array(
             'name'=>$name,
             'email'=>$email,
-            'password'=>$password,
+            'password' => Hash::make($password),
             'first_name'=>$first_name,
             'last_name'=>$last_name,
             'date_of_birth'=>$date_of_birth,

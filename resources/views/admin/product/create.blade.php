@@ -16,6 +16,7 @@
 
                             <div class="col-md-6">
                                 <input id="product_name" type="text" class="form-control{{ $errors->has('product_name') ? ' is-invalid' : '' }}" name="product_name" value="{{ old('product_name') }}" autofocus>
+                                <div style="color:#FF0000" class="errormsg" for="product_name"></div>
                             </div>
                             <div class="col-md-6 offset-md-4">
                                 @if($errors->has('product_name'))
@@ -31,6 +32,7 @@
 
                             <div class="col-md-6">
                                 <input id="product_sku" type="text" class="form-control{{ $errors->has('product_sku') ? ' is-invalid' : '' }}" name="product_sku" value="{{ old('product_sku') }}" autofocus>
+                                <div style="color:#FF0000" class="errormsg" for="product_sku"></div>
                             </div>
                             <div class="col-md-6 offset-md-4">
                                 @if($errors->has('product_sku'))
@@ -46,6 +48,7 @@
 
                             <div class="col-md-6">
                                 <input id="product_price" type="text" class="form-control{{ $errors->has('product_price') ? ' is-invalid' : '' }}" name="product_price" value="{{ old('product_price') }}" autofocus>
+                                <div style="color:#FF0000" class="errormsg" for="product_price"></div>
                             </div>
                             <div class="col-md-6 offset-md-4">
                                 @if($errors->has('product_price'))
@@ -62,6 +65,7 @@
 
                             <div class="col-md-6">
                                 <input id="category_id" type="category_id" class="form-control{{ $errors->has('category_id') ? ' is-invalid' : '' }}" name="category_id" value="{{ old('category_id') }}" autofocus>
+                                <div style="color:#FF0000" class="errormsg" for="category_id"></div>
                             </div>
                             <div class="col-md-6 offset-md-4">
                                 @if($errors->has('category_id'))
@@ -77,6 +81,7 @@
                             
                             <div class="col-md-6">
                                 <input id="Product_image" type="file" class="form-control{{ $errors->has('Product_image') ? ' is-invalid' : '' }}" name="Product_image" autofocus>
+                                <div style="color:#FF0000" class="errormsg" for="Product_image"></div>
                             </div>
                             <div class="col-md-6 offset-md-4">
                                 @if($errors->has('Product_image'))

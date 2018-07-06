@@ -30,7 +30,7 @@ class CreateUser extends FormRequest
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/',
             'date_of_birth'=>'required|date',
-            'avatar'=>'image'
+            'avatar'=>'image',
         ];
     }
 }

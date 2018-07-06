@@ -12,11 +12,12 @@
                     enctype="multipart/form-data">
                         @csrf
 
-                        <div class="form-group row">
+                        <div id="form" class="form-group row">
                             
                             <label for="name" class="col-md-2 col-form-label text-md-left">{{ __('Name') }}</label>
                             <div class="col-md-10">
-                                <input id="name" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ old('name') }}"  autofocus>
+                                <input id="name" name="name" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ old('name') }}"  autofocus>
+                                <div style="color:#FF0000" class="errormsg" for="name"></div>
                             </div>
                             <div class="col-md-6 offset-md-2">
                                 @if($errors->has('name'))
@@ -28,11 +29,12 @@
                             </div>
 
                         </div>
-                        <div class="form-group row">
+                        <div id="form" class="form-group row">
                             <label for="first_name" class="col-md-2 col-form-label text-md-left">{{ __('First Name') }}</label>
 
                             <div class="col-md-10">
-                                <input id="first_name" type="text" class="form-control{{ $errors->has('first_name') ? ' is-invalid' : '' }}" name="first_name" value="{{ old('first_name') }}" autofocus>
+                                <input id="first_name" name="first_name" type="text" class="form-control{{ $errors->has('first_name') ? ' is-invalid' : '' }}" name="first_name" value="{{ old('first_name') }}" autofocus>
+                                <div style="color:#FF0000" class="errormsg" for="first_name"></div>
                             </div>
                             <div class="col-md-6 offset-md-2">
                                 @if($errors->has('first_name'))
@@ -48,6 +50,7 @@
 
                             <div class="col-md-10">
                                 <input id="last_name" type="text" class="form-control{{ $errors->has('last_name') ? ' is-invalid' : '' }}" name="last_name" value="{{ old('last_name') }}" autofocus>
+                                <div style="color:#FF0000" class="errormsg" for="last_name"></div>
                             </div>
                             <div class="col-md-6 offset-md-2">
                                 @if($errors->has('last_name'))
@@ -65,6 +68,7 @@
 
                             <div class="col-md-10">
                                 <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" autofocus>
+                                <div style="color:#FF0000" class="errormsg" for="email"></div>
                             </div>
                             <div class="col-md-6 offset-md-2">
                                 @if($errors->has('email'))
@@ -81,6 +85,7 @@
 
                             <div class="col-md-10">
                                 <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" autofocus>
+                                <div style="color:#FF0000" class="errormsg" for="password"></div>
                             </div>
                             <div class="col-md-6 offset-md-2">
                                 @if($errors->has('password'))
@@ -96,6 +101,7 @@
 
                             <div class="col-md-10">
                                 <input id="date_of_birth" type="date" class="form-control{{ $errors->has('date_of_birth') ? ' is-invalid' : '' }}" name="date_of_birth" autofocus>
+                                <div style="color:#FF0000" class="errormsg" for="date_of_birth"></div>
                             </div>
                             <div class="col-md-6 offset-md-2">
                                 @if($errors->has('date_of_birth'))
