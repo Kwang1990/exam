@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\CreateUser;
+use DB;
 
 class userController extends Controller
 {
@@ -17,11 +18,69 @@ class userController extends Controller
         $this->user=$user;
     }
     //
-    public function index(){
+    public function index(Request $request){
     	// dd(route('user.index'));
-    	$users = User::all();
+        // dd($request->ajax());
+    	$users = DB::table('users');
+        if($request->ajax()){
+            $output=" <tr>
+                    <th>Id</th>
+                    <th>Email</th>
+                    <th>Name</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>DayOfBirth</th>
+                    <th>Image</th>
+                    <th>Action</th>
+                </tr>";
+            if(!empty($request->email)){
+            $users = $users->where('email','like',"%".$request->email."%");
+
+            // ->orwhere('first_name','like',"%".$request->search."%")->orwhere('last_name','like',"%".$request->search."%");
+            }
+            if(!empty($request->fname)){
+            $users = $users->where('first_name','like',"%".$request->fname."%");
+            
+            // ->orwhere('first_name','like',"%".$request->search."%")->orwhere('last_name','like',"%".$request->search."%");
+            }
+            if(!empty($request->lname)){
+            $users = $users->where('last_name','like',"%".$request->lname."%");
+            
+            // ->orwhere('first_name','like',"%".$request->search."%")->orwhere('last_name','like',"%".$request->search."%");
+            }
+            // else if(!empty($request->search1)){
+            //     $users = $users->where('first_name','like',"%".$request->search1."%");
+            // }
+            // else if(!empty($request->search2)){
+            //     $users = $users->where('last_name','like',"%".$request->search2."%");
+            // }
+             
+            foreach ($users->get() as $user) {
+
+               $output.= "<tr>".
+                        "<td>".$user->id."</td>".
+                        "<td>".$user->email."</td>".
+                        "<td>".$user->name."</td>".
+                        "<td>".$user->first_name."</td>".
+                        "<td>".$user->last_name."</td>".
+                        "<td>".$user->date_of_birth."</td>".
+                        "<td>".$user->avatar."</td>".
+                        "<td>".
+                            "<a href=\"".url('/admin/user/'.$user->id.'/edit')."\" class=\"btn btn-info\" role=\"button\">Edit</a>".
+                            "<a href=\"".url('/admin/user/'.$user->id.'/delete')."\" class=\"btn btn-danger\" role=\"button\" onclick=\"return confirm('Are you sure?')\">Del</a>".
+                        "</td>".
+                    "</tr>" ;
+                   // dd($output);
+            }
+           
+            //dd($users->get());
+            return Response($output);
+
+           
+
+        }
     	return view('admin.user.index',[
-    		'users'=>$users
+    		'users'=>$users->get()
     	]);
 
     }
@@ -62,11 +121,11 @@ class userController extends Controller
     }
     public function update(Request $request){
         $path = $request->file('avatar')->store('public/avatars');
-        $allRequest = $request->all();
+        $allRequest = $request->all(); 
         $id = $allRequest['id'];
         $name = $allRequest['name'];
         $email = $allRequest['email'];
-        $password = $allRequest['password'];
+        $password = Hash::make($allRequest['password']);
         $first_name = $allRequest['first_name'];
         $last_name = $allRequest['last_name'];
         $date_of_birth = $allRequest['date_of_birth'];

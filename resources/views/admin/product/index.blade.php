@@ -5,8 +5,33 @@
     
 
         <div>
-            <input class="form-control" id="myInput" type="text" placeholder="Search..">
-  <br>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-4">
+                          <input class="form-control" id="productname" type="text" placeholder="Product Name..">
+                    </div>
+                    <div class="col-4">
+                          <input class="form-control" id="productsku" type="text" placeholder="SKU..">
+                    </div>
+                    <div class="col-4">
+                          <input class="form-control" id="categoryid" type="number" placeholder="Category ID..">
+                    </div>
+                    <br>
+                </div><br>
+                <div class="row">   
+                    <div class="col-4">
+                          <input class="form-control" id="productprice1" type="number" placeholder="Price From..">
+                    </div>
+                    <div class="col-4">
+                          <input class="form-control" id="productprice2" type="number" placeholder="Price to..">
+                    </div>
+                </div>
+            </div>
+            <br>
+             <div class="col-4">
+            <button id="search" type="button" class="btn btn-outline-primary">Search</button>
+        </div>
+            <br>
             <table class="table table-hover">
 
                 <tr>
@@ -27,8 +52,8 @@
                         <td>{{$pros->Product_image}}</td>
                         <td>{{$pros->category_id}}</td>
                         <td>
-                            <a href="product/<?php echo $pros['id_product'];?>/edit" class="btn btn-info" role="button">Edit</a>
-                            <a href='product/<?php echo $pros['id_product'];?>/delete' class="btn btn-danger" role="button" onclick="return confirm('Are you sure?')">Del</a>
+                            <a href="{{url('/admin/product/'.$pros->id_product.'/edit')}}" class="btn btn-info" role="button">Edit</a>
+                            <a href="{{url('/admin/product/'.$pros->id_product.'/delete')}}" class="btn btn-danger" role="button" onclick="return confirm('Are you sure?')">Del</a>
                         </td>
 
                        
@@ -41,5 +66,44 @@
         <div>
                                      <a style="color: #FFF" href="{{ route('product.create')}}" class="btn btn-dark" >Add Product</a>
                             </div>
+            <!-- ajax -->
+            <script type="text/javascript">
+ 
+$('#search').on('click',function(){
+ 
+$productname=$("#productname").val();
+$productsku=$("#productsku").val();
+$categoryid=$("#categoryid").val();
+$pricefrom=$("#productprice1").val();
+$priceto=$("#productprice2").val();
+
+
+$.ajax({
+ 
+type : 'get',
+ 
+url : '/admin/product',
+ 
+data:{'productname':$productname,'productsku':$productsku,'categoryid':$categoryid,'pricefrom':$pricefrom,'priceto':$priceto},
+ 
+success:function(data){
+ 
+$('tbody').html(data);
+ 
+}
+ 
+});
+ 
+ 
+ 
+})
+ 
+</script>
+ 
+<script type="text/javascript">
+ 
+$.ajaxSetup({ headers: { 'csrftoken' : '{{ csrf_token() }}' } });
+ 
+</script>
 
 @endsection

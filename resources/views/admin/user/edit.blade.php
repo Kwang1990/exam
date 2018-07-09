@@ -63,7 +63,7 @@
                             <label for="avatar" class="col-md-2 ">{{ __('Avatar') }}</label>
 
                             <div class="col-md-8">
-                                <input id="avatar" type="file" class="form-control{{ $errors->has('avatar') ? ' is-invalid' : '' }}" name="avatar"  required><br>
+                                <input id="avatar" type="file" class="form-control{{ $errors->has('avatar') ? ' is-invalid' : '' }}" name="avatar" value="{{ old('path',$getUserById['avatar']) }}"  required><br>
                                 <img class=".mx-auto d-block img-thumbnail" width="200px" height="200px" src="{{Storage::url($getUserById['avatar'])}}">
                             </div>
                         </div>
