@@ -46,10 +46,14 @@
                     </tr>
                 @endforeach
             </table>
-        </div>
+                                </div>
+                                <div id="pagination">
+                                  {{$users->links()}}
+                                </div>
             <a style="color: #FFF" href="{{ route('user.create')}}" class="btn btn-dark">Add User</a>
 
-<!-- ajax                                     -->
+<!-- ajax   
+                                  -->
 
 <script type="text/javascript">
  
@@ -70,9 +74,25 @@ url : '/admin/user',
 data:{'email':$email,'fname':$fname,'lname':$lname},
 
  success:function(data){
- 
-$('tbody').html(data);
- 
+ console.log()
+$('tbody').html(data.output);
+$('#pagination').html(data.pagination);
+$('#pagination .page-link').on('click',function(e){
+  var _this = $(this);
+  // console.log(_this.html());
+  $('#pagination .page-item').removeClass('active');
+  _this.parent().addClass('active');
+  e.preventDefault();
+  $.ajax({
+    type : 'get',
+    url : '/admin/user',
+     
+    data:{'email':$email,'fname':$fname,'lname':$lname, 'page':_this.html()},
+    success:function(data){
+      $('tbody').html(data.output);
+    }
+  });
+ });
 }
 });
 })

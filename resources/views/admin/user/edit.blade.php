@@ -11,7 +11,7 @@
                 <div class="card-header">{{ __('Edit User') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ URL::action('userController@update') }}" enctype="multipart/form-data">
+                    <form method="POST" action="{{ URL::action('UserController@update') }}" enctype="multipart/form-data">
                         @csrf
                         <input type="hidden" name="id" value="{{ old('id',$getUserById['id']) }}">
 
@@ -81,5 +81,4 @@
         </div>
     </div>
 </div>
-
 @endsection

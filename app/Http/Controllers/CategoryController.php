@@ -9,8 +9,15 @@ use DB;
 class CategoryController extends Controller
 {
     //
+    public function __construct() {
+    $this->middleware('auth');
+             }
      public function index(Request $request){
-    	$category = DB::table('category');
+        if(auth()->user()->level==0){
+            abort(403);
+        }
+        $itemPerPage = 2;
+    	$category = DB::table('category')->paginate($itemPerPage);
         if($request->ajax()){
             $output="<tr>
                     <th>Id</th>
@@ -18,15 +25,38 @@ class CategoryController extends Controller
                     <th>Description</th>
                     <th>Action</th>
                 </tr>";
-            if(!empty($request->name)){
+                $category = DB::table('category')->orWhere(function ($query) use ($request) {
+                    if(!empty($request->name)){
+                        $query->where('category_name','like',"%".$request->name."%");
+                    }
+                    if(!empty($request->des)){
+                        $query->where('category_description','like',"%".$request->des."%");
+                    } 
+                })
+                ->paginate($itemPerPage);
+           //  if(!empty($request->name)){
 
-            $category = $category->where('category_name','like',"%".$request->name."%");
-            //dd($users->get());
-           }
-           if(!empty($request->des)){
-            $category = $category->where('category_description','like',"%".$request->des."%");
-           }
-           foreach ($category->get() as $cat) {
+           //  $category = $category->where('category_name','like',"%".$request->name."%");
+           //  //dd($users->get());
+           // }
+           // if(!empty($request->des)){
+           //  $category = $category->where('category_description','like',"%".$request->des."%");
+           // }
+                $p = (string)$category->links();
+                if(!empty($request->page)){
+                    $users = DB::table('category')->orWhere(function ($query) use ($request) {
+                    if(!empty($request->name)){
+                        $query->where('category_name','like',"%".$request->name."%");
+                    }
+                    if(!empty($request->des)){
+                        $query->where('category_description','like',"%".$request->des."%");
+                    }
+                })
+                ->offset($itemPerPage*($request->page-1))
+                ->limit($itemPerPage)
+                ->get();
+                }
+           foreach ($category as $cat) {
 
                $output.= "<tr>".
                         "<td>".$cat->category_id."</td>".
@@ -39,11 +69,14 @@ class CategoryController extends Controller
                     "</tr>" ;
                    // dd($output);
             }
-            return Response($output);
-        }
-        return view('admin.category.index',[
-            'category'=>$category->get()
+    
+            return Response()->json([
+            'output' => $output,
+            'category' => $category,
+            'pagination' => $p,
         ]);
+        }
+        return view('admin.category.index',compact('category'));
 
     }
     public function create(){

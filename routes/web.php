@@ -10,7 +10,13 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+// Đăng nhập và xử lý đăng nhập
+Route::get('login', [ 'as' => 'login', 'uses' => 'Auth\LoginController@getLogin']);
+Route::post('login', [ 'as' => 'login', 'uses' => 'Auth\LoginController@postLogin']);
+ 
+// Đăng xuất
+Route::get('logout', [ 'as' => 'logout', 'uses' => 'Auth\LogoutController@getLogout']);
+//
 Route::get('/', function () {
     return view('welcome');
 });
@@ -24,13 +30,13 @@ Route::get('/admin', function () {
 Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 //User
-Route::get('/admin/user','userController@index')->name('user.index');
-Route::get('/admin/getUsers','userController@getUsers');
-Route::get('/admin/user/create','userController@create')->name('user.create');
-Route::post('/admin/user/create','userController@store')->name('user.store');
-Route::get('/admin/user/{id}/edit','userController@edit')->name('user.edit');
-Route::post('/admin/user/update','userController@update')->name('user.update');
-Route::get('/admin/user/{id}/delete','userController@del')->name('user.del');
+Route::get('/admin/user','UserController@index')->name('user.index');
+Route::get('/admin/getUsers','UserController@getUsers');
+Route::get('/admin/user/create','UserController@create')->name('user.create');
+Route::post('/admin/user/create','UserController@store')->name('user.store');
+Route::get('/admin/user/{id}/edit','UserController@edit')->name('user.edit');
+Route::post('/admin/user/update','UserController@update')->name('user.update');
+Route::get('/admin/user/{id}/delete','UserController@del')->name('user.del');
 //Category
 Route::get('/admin/category','CategoryController@index')->name('Category.index');
 Route::get('/admin/category/create','CategoryController@create')->name('category.create');

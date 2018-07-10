@@ -42,40 +42,56 @@
             </table>
            
         </div>
-
+                                    <div id="pagination">
+                                  {{$category->links()}}
+                                </div>
+                                    <div>
                                      <a style="color: #FFF" href="{{ route('category.create')}}" class="btn btn-dark">Add Category</a>
+                                 </div>
 <!-- ajax -->
-        <script type="text/javascript">
+<script type="text/javascript">
+ $('#search').on('click',function(){
+$name=$("#namesearch").val();
+
+$des=$("#dessearch").val();
+$.ajax({
  
-                    $('#search').on('click',function(){
+type : 'get',
+ 
+url : '/admin/category',
+ 
+data:{'name':$name,'des':$des},
+
+ success:function(data){
+ console.log()
+$('tbody').html(data.output);
+$('#pagination').html(data.pagination);
+$('#pagination .page-link').on('click',function(e){
+  var _this = $(this);
+  // console.log(_this.html());
+  $('#pagination .page-item').removeClass('active');
+  _this.parent().addClass('active');
+  e.preventDefault();
+  $.ajax({
+    type : 'get',
+    url : '/admin/category',
+     
+    data:{'name':$name,'des':$des,'page':_this.html()},
+    success:function(data){
+      $('tbody').html(data.output);
+    }
+  });
+ });
+}
+});
+})                     
+    </script>
                      
-                    $name=$("#namesearch").val();
-                    $des=$("#dessearch").val();
-                     
-                    $.ajax({
-                     
-                    type : 'get',
-                     
-                    url : '/admin/category',
-                     
-                    data:{'name':$name,'des':$des},
-                     
-                    success:function(data){
-                     
-                    $('tbody').html(data);
-                     
-                    }
-                     
-                    });
-                    })
-                     
-                    </script>
-                     
-                    <script type="text/javascript">
+    <script type="text/javascript">
                      
                     $.ajaxSetup({ headers: { 'csrftoken' : '{{ csrf_token() }}' } });
  
-</script>
+    </script>
 <!-- <script type="text/javascript">
  
                     $('#search1').on('click',function(){

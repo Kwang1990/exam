@@ -8,7 +8,7 @@
                 <div class="card-header">{{ __('Add User') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ URL::action('userController@store') }}" aria-label="{{ __('Register') }}"
+                    <form method="POST" action="{{ URL::action('UserController@store') }}" aria-label="{{ __('Register') }}"
                     enctype="multipart/form-data">
                         @csrf
 

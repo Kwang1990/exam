@@ -20,28 +20,7 @@
 </head>
 <body>
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-  <a class="navbar-brand" href="{{route('admin')}}">Maruweb |</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="collapsibleNavbar">
-    <ul class="navbar-nav">
-      <li class="nav-item">
-        <a class="nav-link" href="{{route('user.index')}}">Users</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{{route('Category.index')}}">Category</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{{route('product.index')}}">Product</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{{route('logout')}}" >Logout</a>
-      </li>   
-    </ul>
-  </div>  
 </nav>
-
 <div class="container-fluid" style="margin-top:30px">
   <div class="row">
     <div class="col">

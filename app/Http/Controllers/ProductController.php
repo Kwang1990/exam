@@ -12,8 +12,15 @@ use DB;
 class ProductController extends Controller
 {
     //
+    public function __construct() {
+    $this->middleware('auth');
+                      }
     public function index(Request $request){
-        $product = DB::table('product');
+        if(auth()->user()->level==0){
+            abort(404);
+        }
+        $itemPerPage=2;
+        $product = DB::table('product')->paginate($itemPerPage);
         if($request->ajax()){
             $output="<tr>
                     <th>Id</th>
@@ -24,26 +31,68 @@ class ProductController extends Controller
                     <th>CatID</th>
                     <th>Action</th>
                 </tr>";
-            if(!empty($request->productname)){
+                $product = DB::table('product')->orWhere(function ($query) use ($request) {
+                    if(!empty($request->productname)){
+                        $query->where('product_name','like',"%".$request->productname."%");
+                    }
+                    if(!empty($request->productsku)){
+                        $query->where('product_sku','like',"%".$request->productsku."%");
+                    }
+                    if(!empty($request->categoryid)){
+                        $query->where('category_id','like',"%".$request->categoryid."%");
+                    }
+                    if(!empty($request->pricefrom)){
+                        $query->where('product_price','>=',$request->pricefrom);
+                    }
+                    if(!empty($request->priceto)){
+                        $query->where('product_price','<=',$request->priceto);
+                    } 
+                })
+                ->paginate($itemPerPage);
+                 $p = (string)$product->links();
+                 if(!empty($request->page)){
+                    $product = DB::table('product')->orWhere(function ($query) use ($request) {
+                    if(!empty($request->productname)){
+                        $query->where('product_name','like',"%".$request->productname."%");
+                    }
+                    if(!empty($request->productsku)){
+                        $query->where('product_sku','like',"%".$request->productsku."%");
+                    }
+                    if(!empty($request->categoryid)){
+                        $query->where('category_id','like',"%".$request->categoryid."%");
+                    }
+                    if(!empty($request->pricefrom)){
+                        $query->where('product_price','>=',$request->pricefrom);
+                    }
+                    if(!empty($request->priceto)){
+                        $query->where('product_price','<=',$request->priceto);
+                    } 
+                })
+                    ->offset($itemPerPage*($request->page-1))
+                ->limit($itemPerPage)
+                ->get();
+                 }
 
-            $product = $product->where('product_name','like',"%".$request->productname."%");
-            //dd($users->get());
-           }
-           if(!empty($request->productsku)){
-            $product = $product->where('product_sku','like',"%".$request->productsku."%");
-           }
-           if(!empty($request->categoryid)){
-            $product = $product->where('category_id','like',"%".$request->categoryid."%");
-           }
-           if(!empty($request->pricefrom)){
-            // dd($request->pricefrom);
-            $product = $product->where('product_price','>=',$request->pricefrom);
-           }
-           if(!empty($request->priceto)){
-            // dd($request->pricefrom);
-            $product = $product->where('product_price','<=',$request->priceto);
-           }
-           foreach ($product->get() as $pro) {
+           //  if(!empty($request->productname)){
+
+           //  $product = $product->where('product_name','like',"%".$request->productname."%");
+           //  //dd($users->get());
+           // }
+           // if(!empty($request->productsku)){
+           //  $product = $product->where('product_sku','like',"%".$request->productsku."%");
+           // }
+           // if(!empty($request->categoryid)){
+           //  $product = $product->where('category_id','like',"%".$request->categoryid."%");
+           // }
+           // if(!empty($request->pricefrom)){
+           //  // dd($request->pricefrom);
+           //  $product = $product->where('product_price','>=',$request->pricefrom);
+           // }
+           // if(!empty($request->priceto)){
+           //  // dd($request->pricefrom);
+           //  $product = $product->where('product_price','<=',$request->priceto);
+           // }
+           foreach ($product as $pro) {
 
                $output.= "<tr>".
                         "<td>".$pro->id_product."</td>".
@@ -59,11 +108,13 @@ class ProductController extends Controller
                     "</tr>" ;
                    // dd($output);
             }
-            return Response($output);
-        }
-        return view('admin.product.index',[
-            'product'=>$product->get()
+            return Response()->json([
+            'output' => $output,
+            'product' => $product,
+            'pagination' => $p,
         ]);
+        }
+        return view('admin.product.index',compact('product'));
     }
     
 

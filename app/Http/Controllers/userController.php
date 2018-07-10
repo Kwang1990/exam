@@ -10,18 +10,19 @@ use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\CreateUser;
 use DB;
 
-class userController extends Controller
+class UserController extends Controller
 {
     private $user;
-
-    public function __construct(User $user){
-        $this->user=$user;
-    }
+    public function __construct() {
+    $this->middleware('auth');
+}
     //
     public function index(Request $request){
-    	// dd(route('user.index'));
-        // dd($request->ajax());
-    	$users = DB::table('users');
+        if(auth()->user()->level==0){
+            abort(404);
+        }
+        $itemPerPage = 2;
+    	$users = DB::table('users')->paginate($itemPerPage);
         if($request->ajax()){
             $output=" <tr>
                     <th>Id</th>
@@ -32,30 +33,38 @@ class userController extends Controller
                     <th>DayOfBirth</th>
                     <th>Image</th>
                     <th>Action</th>
-                </tr>";
-            if(!empty($request->email)){
-            $users = $users->where('email','like',"%".$request->email."%");
-
-            // ->orwhere('first_name','like',"%".$request->search."%")->orwhere('last_name','like',"%".$request->search."%");
-            }
-            if(!empty($request->fname)){
-            $users = $users->where('first_name','like',"%".$request->fname."%");
-            
-            // ->orwhere('first_name','like',"%".$request->search."%")->orwhere('last_name','like',"%".$request->search."%");
-            }
-            if(!empty($request->lname)){
-            $users = $users->where('last_name','like',"%".$request->lname."%");
-            
-            // ->orwhere('first_name','like',"%".$request->search."%")->orwhere('last_name','like',"%".$request->search."%");
-            }
-            // else if(!empty($request->search1)){
-            //     $users = $users->where('first_name','like',"%".$request->search1."%");
-            // }
-            // else if(!empty($request->search2)){
-            //     $users = $users->where('last_name','like',"%".$request->search2."%");
-            // }
-             
-            foreach ($users->get() as $user) {
+                </tr>"
+                ;
+            $users = DB::table('users')->orWhere(function ($query) use ($request) {
+                    if(!empty($request->email)){
+                        $query->where('email','like',"%".$request->email."%");
+                    }
+                    if(!empty($request->fname)){
+                        $query->where('first_name','like',"%".$request->fname."%");
+                    }
+                    if(!empty($request->lname)){
+                        $query->where('last_name','like',"%".$request->lname."%");
+                    } 
+                })
+                ->paginate($itemPerPage); 
+                $p = (string)$users->links();
+                if(!empty($request->page)){
+                    $users = DB::table('users')->orWhere(function ($query) use ($request) {
+                    if(!empty($request->email)){
+                        $query->where('email','like',"%".$request->email."%");
+                    }
+                    if(!empty($request->fname)){
+                        $query->where('first_name','like',"%".$request->fname."%");
+                    }
+                    if(!empty($request->lname)){
+                        $query->where('last_name','like',"%".$request->lname."%");
+                    } 
+                })
+                ->offset($itemPerPage*($request->page-1))
+                ->limit($itemPerPage)
+                ->get();
+                }
+            foreach ($users as $user) {
 
                $output.= "<tr>".
                         "<td>".$user->id."</td>".
@@ -69,19 +78,16 @@ class userController extends Controller
                             "<a href=\"".url('/admin/user/'.$user->id.'/edit')."\" class=\"btn btn-info\" role=\"button\">Edit</a>".
                             "<a href=\"".url('/admin/user/'.$user->id.'/delete')."\" class=\"btn btn-danger\" role=\"button\" onclick=\"return confirm('Are you sure?')\">Del</a>".
                         "</td>".
-                    "</tr>" ;
-                   // dd($output);
+                    "</tr>";
             }
-           
-            //dd($users->get());
-            return Response($output);
-
-           
-
-        }
-    	return view('admin.user.index',[
-    		'users'=>$users->get()
-    	]);
+            
+        return Response()->json([
+            'output' => $output,
+            'users' => $users,
+            'pagination' => $p,
+        ]);
+    }
+    	return view('admin.user.index',compact('users'));
 
     }
     public function detail($id){
@@ -91,9 +97,6 @@ class userController extends Controller
         return view('admin.user.create');
     }
     public function store(CreateUser $request){
-        // $file = Input::file('avatar');
-        // $file_path='user/'.time().$file->getClientOriginalName();
-        // Storage::disk('local')->put($file_path, $file_path);
         $path = $request->file('avatar')->store('public/avatars');
         $allRequest = $request->all();
         $name = $allRequest['name'];
@@ -112,7 +115,7 @@ class userController extends Controller
             'avatar'=>$path
         );
         $this->user->create($dataInsertToDatabase);
-        return redirect()->action('userController@index');
+        return redirect()->action('UserController@index');
     }
     public function edit($id){
         $objUser = new User();
@@ -140,7 +143,7 @@ class userController extends Controller
         $getUserById->date_of_birth = $date_of_birth;
         $getUserById->avatar = $path;
         $getUserById->save();
-        return redirect()->action('userController@index');
+        return redirect()->action('UserController@index');
 
     }
     public function del($id){
@@ -149,6 +152,6 @@ class userController extends Controller
         if($user->delete()){
                     Storage::delete($avatar);
     }
-        return redirect()->action('userController@index');
+        return redirect()->action('UserController@index');
     }
 }

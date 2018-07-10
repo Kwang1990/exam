@@ -61,23 +61,24 @@
                     </tr>
                 @endforeach
             </table>
-           
+                        
         </div>
-        <div>
+        
+                            <div id="pagination">
+                                  {{$product->links()}}
+                                </div>
+                                <div>
                                      <a style="color: #FFF" href="{{ route('product.create')}}" class="btn btn-dark" >Add Product</a>
                             </div>
             <!-- ajax -->
             <script type="text/javascript">
- 
+//data:{'productname':$productname,'productsku':$productsku,'categoryid':$categoryid,'pricefrom':$pricefrom,'priceto':$priceto},
 $('#search').on('click',function(){
- 
 $productname=$("#productname").val();
 $productsku=$("#productsku").val();
 $categoryid=$("#categoryid").val();
 $pricefrom=$("#productprice1").val();
 $priceto=$("#productprice2").val();
-
-
 $.ajax({
  
 type : 'get',
@@ -85,19 +86,30 @@ type : 'get',
 url : '/admin/product',
  
 data:{'productname':$productname,'productsku':$productsku,'categoryid':$categoryid,'pricefrom':$pricefrom,'priceto':$priceto},
- 
-success:function(data){
- 
-$('tbody').html(data);
- 
+
+ success:function(data){
+ console.log()
+$('tbody').html(data.output);
+$('#pagination').html(data.pagination);
+$('#pagination .page-link').on('click',function(e){
+  var _this = $(this);
+  // console.log(_this.html());
+  $('#pagination .page-item').removeClass('active');
+  _this.parent().addClass('active');
+  e.preventDefault();
+  $.ajax({
+    type : 'get',
+    url : '/admin/product',
+     
+    data:{'productname':$productname,'productsku':$productsku,'categoryid':$categoryid,'pricefrom':$pricefrom,'priceto':$priceto,'page':_this.html()},
+    success:function(data){
+      $('tbody').html(data.output);
+    }
+  });
+ });
 }
- 
 });
- 
- 
- 
 })
- 
 </script>
  
 <script type="text/javascript">
