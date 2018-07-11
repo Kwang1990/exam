@@ -48,7 +48,7 @@ Route::get('/admin/category/{category_id}/delete','CategoryController@del')->nam
 Route::get('/admin/product','ProductController@index')->name('product.index');
 Route::get('/admin/product/create','ProductController@create')->name('product.create');
 Route::post('/admin/product/create','ProductController@store')->name('product.store');
-Route::get('/admin/product/{id_product}/edit','ProductController@edit')->name('product.edit');
+Route::get('/admin/product/{id}/edit','ProductController@edit')->name('product.edit');
 Route::post('/admin/product/update','ProductController@update')->name('product.update');
-Route::get('/admin/product/{id_product}/delete','ProductController@del')->name('product.delete');
+Route::get('/admin/product/{id}/delete','ProductController@del')->name('product.delete');
 //admin nè

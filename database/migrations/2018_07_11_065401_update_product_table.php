@@ -15,9 +15,8 @@ class UpdateProductTable extends Migration
     {
         //
         Schema::table('product', function (Blueprint $table) {
-            $table->string('Product_image')->nullable()->change();
+            $table->renameColumn('id','id');
         });
-
     }
 
     /**
