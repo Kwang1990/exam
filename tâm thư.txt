@@ -1,0 +1,18 @@
+truy cap : http://localhost:8000/admin ---> vào trang Admin
+
+Admin: admin@gmail.com   (lvl =1)
+Password: Nguyenminh@1234
+
+Normal User: test@gmail.com
+Password: Nguyenminh@1234
+
+--------------------------------------------
+
+File SQL : exam.sql
+
+
+Mentor: Vu sàn & B?o sàn -- (Trai sáu múi & Trai 1 múi)
+
+
+Xin giám kh?o ch?m bài em nh? nhàng ! 
+em xin c?m on và H?u t? 1 ly cafe nhé <3

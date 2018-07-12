@@ -55,7 +55,7 @@
                                        class="col-md-4 col-form-label text-md-right">{{ __('Price') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="product_price" type="text"
+                                    <input id="product_price" type="number"
                                            class="form-control{{ $errors->has('product_price') ? ' is-invalid' : '' }}"
                                            name="product_price" value="{{ old('product_price') }}" autofocus>
                                     <div style="color:#FF0000" class="errormsg" for="product_price"></div>

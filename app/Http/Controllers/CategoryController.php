@@ -20,8 +20,8 @@ class CategoryController extends Controller
         if (auth()->user()->level == 0) {
             abort(403);
         }
-        $itemPerPage = 2;
-        $category = DB::table('category')->paginate($itemPerPage);
+        $itemPerPage = 3;
+        $category = DB::table('category')->orderBy('created_at','DESC')->paginate($itemPerPage);
         if ($request->ajax()) {
             $output = "<tr>
                     <th>Id</th>

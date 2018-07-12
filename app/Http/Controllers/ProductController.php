@@ -8,6 +8,8 @@ use App\Category;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\CreateProduct;
+use App\Http\Requests\EditProduct;
+
 use DB;
 
 class ProductController extends Controller
@@ -30,8 +32,8 @@ class ProductController extends Controller
         if (auth()->user()->level == 0) {
             abort(403);
         }
-        $itemPerPage = 2;
-        $product = DB::table('product')->join('category', 'product.category_id', '=', 'category.category_id')->paginate($itemPerPage);
+        $itemPerPage = 3;
+        $product = DB::table('product')->join('category', 'product.category_id', '=', 'category.category_id')->orderBy('product.created_at','DESC')->paginate($itemPerPage);
         if ($request->ajax()) {
             $output = "<tr>
                     <th>Id</th>
@@ -39,10 +41,10 @@ class ProductController extends Controller
                     <th>SKU</th>
                     <th>Price</th>
                     <th>Images</th>
-                    <th>CatID</th>
+                    <th>Category</th>
                     <th>Action</th>
                 </tr>";
-            $product = DB::table('product')->orWhere(function ($query) use ($request) {
+            $product = DB::table('product')->join('category', 'product.category_id', '=', 'category.category_id')->orWhere(function ($query) use ($request) {
                 if (!empty($request->productname)) {
                     $query->where('product_name', 'like', "%" . $request->productname . "%");
                 }
@@ -50,7 +52,7 @@ class ProductController extends Controller
                     $query->where('product_sku', 'like', "%" . $request->productsku . "%");
                 }
                 if (!empty($request->categoryid)) {
-                    $query->where('category_id', 'like', "%" . $request->categoryid . "%");
+                    $query->where('category_name', 'like', "%" . $request->categoryid . "%");
                 }
                 if (!empty($request->pricefrom)) {
                     $query->where('product_price', '>=', $request->pricefrom);
@@ -62,7 +64,7 @@ class ProductController extends Controller
                 ->paginate($itemPerPage);
             $p = (string)$product->links();
             if (!empty($request->page)) {
-                $product = DB::table('product')->orWhere(function ($query) use ($request) {
+                $product = DB::table('product')->join('category', 'product.category_id', '=', 'category.category_id')->orWhere(function ($query) use ($request) {
                     if (!empty($request->productname)) {
                         $query->where('product_name', 'like', "%" . $request->productname . "%");
                     }
@@ -70,7 +72,7 @@ class ProductController extends Controller
                         $query->where('product_sku', 'like', "%" . $request->productsku . "%");
                     }
                     if (!empty($request->categoryid)) {
-                        $query->where('category_id', 'like', "%" . $request->categoryid . "%");
+                        $query->where('category_name', 'like', "%" . $request->categoryid . "%");
                     }
                     if (!empty($request->pricefrom)) {
                         $query->where('product_price', '>=', $request->pricefrom);
@@ -91,7 +93,7 @@ class ProductController extends Controller
                     "<td>" . $pro->product_sku . "</td>" .
                     "<td>" . $pro->product_price . "</td>" .
                     '<td><img class="mx-auto d-block img-thumbnail" width="200px" height="200px" src="' . Storage::url($pro->Product_image) . '"></td>' .
-                    "<td>" . $pro->category_id . "</td>" .
+                    "<td>" . $pro->category_name . "</td>" .
                     "<td>" .
                     "<a href=\"" . url('/admin/product/' . $pro->id . '/edit') . "\" class=\"btn btn-info\" role=\"button\">Edit</a>" .
                     "<a href=\"" . url('/admin/product/' . $pro->id . '/delete') . "\" class=\"btn btn-danger\" role=\"button\" onclick=\"return confirm('Are you sure?')\">Del</a>" .
@@ -117,7 +119,11 @@ class ProductController extends Controller
 
     public function store(CreateProduct $request)
     {
-        $path = $request->file('Product_image')->store('public/product');
+
+        $path = "";
+        if ($request->file('Product_image') != null) {
+            $path = $request->file('Product_image')->store('public/product');
+        }
         $allRequest = $request->all();
         $product_name = $allRequest['product_name'];
         $product_sku = $allRequest['product_sku'];
@@ -142,7 +148,7 @@ class ProductController extends Controller
         return view('admin.product.edit', compact('cats', 'getProductById'));
     }
 
-    public function update(CreateProduct $request)
+    public function update(EditProduct $request)
     {
         $allRequest = $request->all();
         $id = $allRequest['id'];

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\EditUser;
 use Illuminate\Http\Request;
 use App\User;
 use Illuminate\Support\Facades\Hash;
@@ -27,8 +28,8 @@ class UserController extends Controller
         if (auth()->user()->level == 0) {
             abort(403);
         }
-        $itemPerPage = 2;
-        $users = DB::table('users')->paginate($itemPerPage);
+        $itemPerPage = 3;
+        $users = DB::table('users')->orderBy('created_at','DESC')->paginate($itemPerPage);
         if ($request->ajax()) {
             $output = " <tr>
                     <th>Id</th>
@@ -78,7 +79,7 @@ class UserController extends Controller
                     "<td>" . $user->first_name . "</td>" .
                     "<td>" . $user->last_name . "</td>" .
                     "<td>" . $user->date_of_birth . "</td>" .
-                    '<td><img class="mx-auto d-block img-thumbnail" width="200px" height="200px" src="'.Storage::url($user->avatar).'"></td>'.
+                    '<td><img class="mx-auto d-block img-thumbnail" width="100px" height="100px" src="'.Storage::url($user->avatar).'"></td>'.
                     "<td>" .
                     "<a href=\"" . url('/admin/user/' . $user->id . '/edit') . "\" class=\"btn btn-info\" role=\"button\">Edit</a>" .
                     "<a href=\"" . url('/admin/user/' . $user->id . '/delete') . "\" class=\"btn btn-danger\" role=\"button\" onclick=\"return confirm('Are you sure?')\">Del</a>" .
@@ -137,7 +138,7 @@ class UserController extends Controller
         return view('admin.user.edit')->with('getUserById', $getUserById);
     }
 
-    public function update(CreateUser $request)
+    public function update(EditUser $request)
     {
         $allRequest = $request->all();
         $id = $allRequest['id'];
@@ -147,9 +148,13 @@ class UserController extends Controller
         if(!empty($request->file('avatar'))) {
             $path = $request->file('avatar')->store('public/avatars');
         }
+        $password = $getUserById->password;
+        if($allRequest['password']!= null) {
+            $password = Hash::make($allRequest['password']);
+        }
         $name = $allRequest['name'];
         $email = $allRequest['email'];
-        $password = Hash::make($allRequest['password']);
+
         $first_name = $allRequest['first_name'];
         $last_name = $allRequest['last_name'];
         $date_of_birth = $allRequest['date_of_birth'];

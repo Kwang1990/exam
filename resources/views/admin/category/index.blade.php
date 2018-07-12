@@ -93,37 +93,5 @@
         $.ajaxSetup({headers: {'csrftoken': '{{ csrf_token() }}'}});
 
     </script>
-    <!-- <script type="text/javascript">
- 
-                    $('#search1').on('click',function(){
-                     
-                    $value=$("#categorysearch1").val();
-                     
-                    $.ajax({
-                     
-                    type : 'get',
-                     
-                    url : '/admin/category',
-                     
-                    data:{'search1':$value},
-                     
-                    success:function(data){
-                     
-                    $('tbody').html(data);
-                     
-                    }
-                     
-                    });
-                     
-                     
-                     
-                    })
-                     
-                    </script>
-                     
-                    <script type="text/javascript">
-                     
-                    $.ajaxSetup({ headers: { 'csrftoken' : '{{ csrf_token() }}' } });
- 
-</script> -->
+
 @endsection

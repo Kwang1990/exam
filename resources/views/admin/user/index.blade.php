@@ -42,7 +42,7 @@
                     <td>{{$user->last_name}}</td>
                     <td>{{$user->date_of_birth}}</td>
                     <td>
-                        <img class=".mx-auto d-block img-thumbnail" width="200px" height="200px"
+                        <img class=".mx-auto d-block img-thumbnail" width="100px" height="100px"
                              src="{{Storage::url($user->avatar)}}">
                     </td>
                     <td>

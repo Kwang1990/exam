@@ -14,7 +14,7 @@
                     <input class="form-control" id="productsku" type="text" placeholder="SKU..">
                 </div>
                 <div class="col-4">
-                    <input class="form-control" id="categoryid" type="number" placeholder="Category ID..">
+                    <input class="form-control" id="categoryid" type="text" placeholder="Category..">
                 </div>
                 <br>
             </div>
@@ -51,7 +51,7 @@
                     <td>{{$pros->product_sku}}</td>
                     <td>{{$pros->product_price}}</td>
                     <td>
-                        <img class=".mx-auto d-block img-thumbnail" width="200px" height="200px"
+                        <img class=".mx-auto d-block img-thumbnail" width="100px" height="100px"
                              src="{{Storage::url($pros->Product_image)}}">
                     </td>
                     <td>{{$pros->category_name}}</td>
